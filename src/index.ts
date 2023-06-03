@@ -1,40 +1,36 @@
 import "./styles.css";
-import Alpine from 'alpinejs';
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 
-
 // Set your Mapbox access token
-mapboxgl.accessToken =
-  "pk.eyJ1Ijoic2hhbmUtYWZyb2RpZGFjdCIsImEiOiJjbGllYnlqNmowcTNhM3FvYjdzNWY3djRjIn0.gzBrP3TNMbIfqzRez04NdA";
+mapboxgl.accessToken = "pk.eyJ1Ijoic2hhbmUtYWZyb2RpZGFjdCIsImEiOiJjbGllYnlqNmowcTNhM3FvYjdzNWY3djRjIn0.gzBrP3TNMbIfqzRez04NdA";
 
-  const map = new mapboxgl.Map({
-    container: "map",
-    style: "mapbox://styles/shane-afrodidact/cliec7pkb004b01pg9y096n6b/draft", // Use your desired base map style
-    center: [-15.4330, 13.2774], // Center the map 
-    zoom: 1, // Set the initial zoom level (a low value to cover the whole world)
+const map = new mapboxgl.Map({
+  container: "map",
+  style: "mapbox://styles/shane-afrodidact/cliec7pkb004b01pg9y096n6b/draft", // Use your desired base map style
+  center: [-15.433, 13.2774], // Center the map
+  zoom: 1, // Set the initial zoom level (a low value to cover the whole world)
+});
+
+// After the map loads, zoom towards your desired location
+map.on("load", () => {
+  const desiredLocation: mapboxgl.LngLatLike = [-15.433, 13.2774]; // Coordinates of your desired location
+  const padding: number = 100; // Adjust the padding as needed
+  const zoom: number = 7.5; // Adjust the zoom level as needed
+
+  // Ease to the desired location with padding and zoom
+  map.easeTo({
+    center: desiredLocation,
+    zoom: zoom,
+    padding: {
+      top: padding,
+      bottom: padding,
+      left: padding,
+      right: padding,
+    },
+    duration: 3500, // Adjust the duration as needed
   });
-  
-  
-  // After the map loads, zoom towards your desired location
-  map.on("load", () => {
-    const desiredLocation: mapboxgl.LngLatLike = [-15.4330, 13.2774]; // Coordinates of your desired location
-    const padding: number = 100; // Adjust the padding as needed
-    const zoom: number = 7.5; // Adjust the zoom level as needed
-  
-    // Ease to the desired location with padding and zoom
-    map.easeTo({
-      center: desiredLocation,
-      zoom: zoom,
-      padding: {
-        top: padding,
-        bottom: padding,
-        left: padding,
-        right: padding
-      },
-      duration: 3500 // Adjust the duration as needed
-    });
-  });
+});
 
 // Add navigation controls to the map
 map.addControl(new mapboxgl.NavigationControl());
@@ -65,7 +61,7 @@ interface School {
   numberOfStudents: number;
   numberOfClients: number;
   schoolDescription: string;
-  classImage: string
+  classImage: string;
 }
 
 // Get the buttons container element
@@ -108,7 +104,7 @@ const schools: School[] = [
     numberOfStudents: 225,
     numberOfClients: 26,
     schoolDescription: "Afrodidact Model School.",
-    classImage: "img/theswallow.jpg"
+    classImage: "img/theswallow.jpg",
   },
   {
     name: "Bakoteh Proper LBS",
@@ -118,8 +114,9 @@ const schools: School[] = [
     schoolName: "Bakoteh Proper Lower Basic School",
     numberOfStudents: 3000,
     numberOfClients: 51,
-    schoolDescription: "The biggest lower basic school in The Gambia with +/- 3000 pupils. 6 grades, up to 12 classes/grade - 115 teachers. Solar installation installed. Funded by Rotary Grant 2016052 (RC Banjul, RC Beveren-Waas). ",
-    classImage: "img/bakotehproper.jpg"
+    schoolDescription:
+      "The biggest lower basic school in The Gambia with +/- 3000 pupils. 6 grades, up to 12 classes/grade - 115 teachers. Solar installation installed. Funded by Rotary Grant 2016052 (RC Banjul, RC Beveren-Waas). ",
+    classImage: "img/bakotehproper.jpg",
   },
   {
     name: "Albreda LBS",
@@ -129,8 +126,9 @@ const schools: School[] = [
     schoolName: "Albreda Lower Basic School",
     numberOfStudents: 381,
     numberOfClients: 26,
-    schoolDescription: "The lower basic school of Albreda is located in the Northbank. It has 381 pupils + 91 toddlers (Early Childhood Development). There are 6 grades with 2 classes/grade, and 12 teachers. Solar installation installed. Funded by Rotary Grant 2016052 (RC Banjul, RC Beveren-Waas).",
-    classImage: "img/albreda.jpg"
+    schoolDescription:
+      "The lower basic school of Albreda is located in the Northbank. It has 381 pupils + 91 toddlers (Early Childhood Development). There are 6 grades with 2 classes/grade, and 12 teachers. Solar installation installed. Funded by Rotary Grant 2016052 (RC Banjul, RC Beveren-Waas).",
+    classImage: "img/albreda.jpg",
   },
   {
     name: "Njaba Kunda LBS",
@@ -140,8 +138,9 @@ const schools: School[] = [
     schoolName: "Njaba Kunda Lower Basic School",
     numberOfStudents: 406,
     numberOfClients: 26,
-    schoolDescription: "406 pupils + 36 toddlers ECD - 6 grades, 2 classes/grade (gr2:3) - 13 teachers. Solar installation installed. Funded by Rotary Grant 2016052 (RC Banjul, RC Beveren-Waas).",
-    classImage: "img/njabakunda.jpg"
+    schoolDescription:
+      "406 pupils + 36 toddlers ECD - 6 grades, 2 classes/grade (gr2:3) - 13 teachers. Solar installation installed. Funded by Rotary Grant 2016052 (RC Banjul, RC Beveren-Waas).",
+    classImage: "img/njabakunda.jpg",
   },
   // ... other schools
 ];
@@ -167,10 +166,9 @@ function createLocationButton(school: School): void {
       school.numberOfClients,
       school.schoolDescription,
       school.classImage
-    );  
-    
-    openSidebar();
+    );
 
+    openSidebar();
   });
   buttonsContainer?.appendChild(button);
 }
@@ -189,7 +187,6 @@ function updateSchoolInfo(
   schoolDescriptionElement.textContent = description;
   schoolClassImageElement.setAttribute("src", classImage);
 }
-
 
 // The function to zoom out to the country level
 function zoomToCountry(): void {
@@ -221,65 +218,71 @@ function addMarkerToMap(school: School): void {
       school.schoolDescription,
       school.classImage
     );
-    
+
     openSidebar();
   });
 }
-const classImage = document.getElementById('class-image') as HTMLImageElement;
-const expandedImage = document.getElementById('expanded-image') as HTMLImageElement;
-const imageContainer = document.getElementById('image-container');
-const closeButton = document.getElementById('close-button');
+const classImage = document.getElementById("class-image") as HTMLImageElement;
+const expandedImage = document.getElementById(
+  "expanded-image"
+) as HTMLImageElement;
+const imageContainer = document.getElementById("image-container");
+const closeButton = document.getElementById("close-button");
 
-classImage.addEventListener('click', () => {
+classImage.addEventListener("click", () => {
   const imageUrl = classImage.src;
   expandedImage.src = imageUrl;
-  imageContainer?.classList.remove('hidden');
-  imageContainer?.classList.add('opacity-0');
+  imageContainer?.classList.remove("hidden");
+  imageContainer?.classList.add("opacity-0");
   setTimeout(() => {
-    imageContainer?.classList.add('opacity-100');
+    imageContainer?.classList.add("opacity-100");
   }, 0);
 });
 
-closeButton?.addEventListener('click', () => {
-  imageContainer?.classList.remove('opacity-100');
+closeButton?.addEventListener("click", () => {
+  imageContainer?.classList.remove("opacity-100");
   setTimeout(() => {
-    imageContainer?.classList.add('hidden');
+    imageContainer?.classList.add("hidden");
   }, 500);
 });
 
-const closeInfoBoxButton = document.getElementById('close-info-box-button') as HTMLElement | null;
-const infoBox = document.getElementById('info-box') as HTMLElement | null;
+const closeInfoBoxButton = document.getElementById(
+  "close-info-box-button"
+) as HTMLElement | null;
+const infoBox = document.getElementById("info-box") as HTMLElement | null;
 
 if (closeInfoBoxButton && infoBox) {
-  closeInfoBoxButton.addEventListener('click', () => {
-    infoBox.classList.remove('flex'); // Remove the 'hidden' class
-    infoBox.classList.add('hidden'); // Add the 'flex' class
+  closeInfoBoxButton.addEventListener("click", () => {
+    infoBox.classList.remove("flex"); // Remove the 'hidden' class
+    infoBox.classList.add("hidden"); // Add the 'flex' class
   });
 }
 
-const sidebar = document.getElementById('sidebar') as HTMLElement;
-const openSidebarBtn = document.getElementById('openSidebarBtn') as HTMLElement;
-const closeSidebarBtn = document.getElementById('closeSidebarBtn') as HTMLElement;
+const sidebar = document.getElementById("sidebar") as HTMLElement;
+const openSidebarBtn = document.getElementById("openSidebarBtn") as HTMLElement;
+const closeSidebarBtn = document.getElementById(
+  "closeSidebarBtn"
+) as HTMLElement;
 
 // openSidebarBtn.addEventListener('click', () => {
 //   openSidebar();
 // });
 
-closeSidebarBtn.addEventListener('click', () => {
+closeSidebarBtn.addEventListener("click", () => {
   closeSidebar();
 });
 
-function openSidebar() : void {
-  sidebar.style.display = 'flex';
-  openSidebarBtn.style.display = 'none';
+function openSidebar(): void {
+  sidebar.style.display = "flex";
+  openSidebarBtn.style.display = "none";
   if (map) {
     map.resize(); // Trigger map resize event
   }
 }
 
-function closeSidebar() : void {
-  sidebar.style.display = 'none';
-  openSidebarBtn.style.display = 'block';
+function closeSidebar(): void {
+  sidebar.style.display = "none";
+  openSidebarBtn.style.display = "block";
   if (map) {
     map.resize(); // Trigger map resize event
   }
