@@ -102,7 +102,7 @@ const schools: School[] = [
     zoom: 19,
     schoolName: "The Swallow Centre of Emancipating Education",
     numberOfStudents: 225,
-    numberOfClients: 26,
+    numberOfClients: 25,
     schoolDescription: "Afrodidact Model School.",
     classImage: "img/theswallow.jpg",
   },
